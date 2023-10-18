@@ -1,30 +1,47 @@
 class Solution {
     public List<List<Integer>> fourSum(int[] nums, int target) {
-        Arrays.sort(nums); 
-        List<List<Integer>> list = new ArrayList<>();
-        for(int i = 0; i < nums.length - 3; i++){
-            if(i > 0 && nums[i] == nums[i - 1]) continue;
-            for(int j = i + 1; j < nums.length - 2; j++){
-                if(j > i + 1 && nums[j] == nums[j - 1]) continue;
-                twoSum(i, j, (long)target, nums, list);
+         int n = nums.length; // size of the array
+        List<List<Integer>> ans = new ArrayList<>();
+
+        // sort the given array:
+        Arrays.sort(nums);
+
+        // calculating the quadruplets:
+        for (int i = 0; i < n; i++) {
+            // avoid the duplicates while moving i:
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            for (int j = i + 1; j < n; j++) {
+                // avoid the duplicates while moving j:
+                if (j > i + 1 && nums[j] == nums[j - 1]) continue;
+
+                // 2 pointers:
+                int k = j + 1;
+                int l = n - 1;
+                while (k < l) {
+                    long sum = nums[i];
+                    sum += nums[j];
+                    sum += nums[k];
+                    sum += nums[l];
+                    if (sum == target) {
+                        List<Integer> temp = new ArrayList<>();
+                        temp.add(nums[i]);
+                        temp.add(nums[j]);
+                        temp.add(nums[k]);
+                        temp.add(nums[l]);
+                        ans.add(temp);
+                        k++;
+                        l--;
+
+                         while (k < l && nums[k] == nums[k - 1]) k++;
+                        while (k < l && nums[l] == nums[l + 1]) l--;
+                    } else if (sum < target) k++;
+                    else l--;
+                }
             }
         }
-        return list;
-    }
-    public void twoSum(int i, int j, long target, int[] nums, List<List<Integer>> list){
-        long modifiedTarget = target - (nums[i] + nums[j]);
-        int left = j + 1, right = nums.length - 1;
-        while(left < right){
-            int sum = nums[left] + nums[right];
-            if(sum == modifiedTarget){
-                list.add(Arrays.asList(
-                    nums[i], nums[j], nums[left], nums[right]));
-                left++; right--;
-                while(left < right && nums[left] == nums[left - 1]) left++;
-                while(left < right && nums[right] == nums[right + 1]) right--;
-            }
-            else if(sum > modifiedTarget) right--;
-            else left++;
-        }
+
+        return ans;
+
+
     }
 }

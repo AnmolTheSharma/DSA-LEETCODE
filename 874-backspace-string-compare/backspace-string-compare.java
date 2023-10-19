@@ -1,27 +1,31 @@
 class Solution {
-    public boolean backspaceCompare(String s, String t){ 
-         return buildFinalString(s).equals(buildFinalString(t));
+    public boolean backspaceCompare(String s, String t) {
+        return getActual(s).equals(getActual(t));
+  }
+
+  private String getActual(String input) {
+
+    StringBuilder actualString = new StringBuilder();
+    int hashCount = 0;
+
+    for (int i = input.length() - 1; i >= 0 ; i--) {
+
+      // Keep a count of backspace characters
+      if (input.charAt(i) == '#') {
+        hashCount++;
+        continue;
+      }
+
+      // If backspace count > 0 reduce it and skip the character
+      if (hashCount > 0) {
+        hashCount--;
+      } else {
+        // If no backspace, just insert at beginning
+        actualString.insert(0, input.charAt(i));
+      }
     }
 
-    private static String buildFinalString(String str) {
-        Stack<Character> stack = new Stack<>();
-        for (char c : str.toCharArray()) {
-            if (c == '#') {
-                if (!stack.isEmpty()) {
-                    stack.pop();
-                }
-            } else {
-                stack.push(c);
-            }
-            }
-
-        StringBuilder result = new StringBuilder();
-        for (char c : stack) {
-            result.append(c);
-        }
-
-        return result.toString();       
- 
-
+    return actualString.toString();
+        
     }
 }

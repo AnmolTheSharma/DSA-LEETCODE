@@ -5,6 +5,7 @@ class Solution(object):
         :type target: int
         :rtype: List[int]
         """
+          
         n=len(nums)
         for i in range(n-1):
             for j in range(i+1,n):
@@ -12,3 +13,4 @@ class Solution(object):
                     return [i,j]
 
         return []
+        
